@@ -1,0 +1,268 @@
+WindowManager:
+    MainMenu:
+    Settings_Window:
+    Time_Control:
+<MainMenu>:
+    name: 'main_screen'
+    BoxLayout:
+        padding: dp(10), dp(10), dp(10), dp(10)
+        orientation: 'vertical'
+        RoundedButton:
+            id: top_button
+            text: root.top_label
+            font_size: 240
+            bold: True
+            size_hint: 1, .5
+            pos_hint: {'center_x': .5}
+            on_press: root.toggle_click_2()
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: 180
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+        BoxLayout:
+            size_hint: 1, .5
+            AnchorLayout:
+                anchor_x: 'right'
+                RoundedButton:
+                    bold: True
+                    size_hint: .5, .2
+                    font_size: 25
+                    text: 'SETTINGS'
+                    on_press:
+                        app.root.current = 'settings_window'
+                        root.manager.transition.direction = 'left'
+                        root.settings_press()
+            AnchorLayout:
+                anchor_x: 'center'
+                RoundedButton:
+                    id: pause
+                    bold: True
+                    size_hint: .5, .2
+                    font_size: 25
+                    text: 'PAUSE'
+                    on_press: root.pause_press()
+                    on_press: root.pause()
+                    on_release: root.pause_release()
+            AnchorLayout:
+                anchor_x: 'left'
+                RoundedButton:
+                    id: reset
+                    bold: True
+                    size_hint: .5, .2
+                    font_size: 25
+                    text: 'RESET'
+                    on_press: root.reset_press()
+                    on_release: root.reset_release()
+
+        RoundedButton:
+            bold: True
+            id: lower_button
+            text: root.top_label
+            font_size: 240
+            size_hint: 1, .5
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_press: root.toggle_click_1()
+
+<RoundedButton@Button>
+	background_color: (0,0,0,0)
+	background_normal: ''
+	canvas.before:
+		Color:
+			rgba: (179/255,138/255,105/255,1)
+		RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius: [15]
+<Settings_Window>
+    name: 'settings_window'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            padding: dp(25),0,dp(25),0
+            size_hint: 1, .1
+            canvas.before:
+                Color:
+                    rgba: 179/255,138/255,105/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            AnchorLayout:
+                anchor_x: 'left'
+                Button:
+                    bold: True
+                    background_normal: ''
+                    background_down: ''
+                    background_color: 179/255,138/255,105/255, 1
+                    text: 'BACK'
+                    font_size: 25
+                    size_hint: 0.1,1
+                    on_release:
+                        app.root.current = 'main_screen'
+                        root.manager.transition.direction = 'right'
+                        root.back_press()
+
+            AnchorLayout:
+                anchor_x: 'right'
+                Button:
+                    font_size: 25
+                    bold: True
+                    background_normal: ''
+                    background_down: ''
+                    background_color: 179/255,138/255,105/255, 1
+                    text: '+'
+                    size_hint: 0.1,1
+                    on_release:
+                        app.root.current = 'time_control'
+                        root.manager.transition.direction = 'left'
+                        root.add_press()
+        Label:
+            size_hint: 1, .1
+        ScrollView:
+            BoxLayout:
+                id: time_controls
+                spacing: dp(25)
+                size_hint: 1, None
+                height: 77
+                padding: dp(50), 0, dp(50), 0
+                orientation: 'vertical'
+        Label:
+            size_hint: 1, .1
+        BoxLayout:
+            padding: dp(42),0,dp(25),0
+            orientation: 'horizontal'
+            size_hint: 1, .1
+            canvas.before:
+                Color:
+                    rgba: 179/255,138/255,105/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            AnchorLayout:
+                anchor_x: 'left'
+                Button:
+                    id: remove_button
+                    bold: True
+                    background_normal: ''
+                    background_down: ''
+                    background_color: 179/255,138/255,105/255, 1
+                    text: 'REMOVE'
+                    font_size: 25
+                    size_hint: 0.1,1
+                    on_press: root.remove_button()
+            AnchorLayout:
+                anchor_x: 'right'
+                Button:
+                    id: add_button
+                    bold: True
+                    background_normal: ''
+                    background_down: ''
+                    background_color: 179/255,138/255,105/255, 1
+                    text: 'USE'
+                    font_size: 25
+                    size_hint: 0.1,1
+                    on_press:
+                        root.on_use()
+                        app.root.current = 'main_screen'
+                        root.manager.transition.direction = 'right'
+<Time_Control>:
+    name: 'time_control'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            padding: dp(35),0,dp(45),0
+            size_hint: 1, .1
+            canvas.before:
+                Color:
+                    rgba: 179/255,138/255,105/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            AnchorLayout:
+                anchor_x: 'left'
+                Button:
+                    bold: True
+                    background_normal: ''
+                    background_down: ''
+                    background_color: 179/255,138/255,105/255, 1
+                    text: 'BACK'
+                    font_size: 25
+                    size_hint: 0.05,1
+                    on_release:
+                        root.back()
+                        app.root.current = 'settings_window'
+                        root.manager.transition.direction = 'right'
+            AnchorLayout:
+                anchor_x: 'right'
+                Button:
+                    id: create_button
+                    bold: True
+                    background_normal: ''
+                    background_down: ''
+                    background_color: 179/255,138/255,105/255, 1
+                    text: 'CREATE'
+                    font_size: 25
+                    size_hint: 0.05,1
+                    on_release:
+                        root.create_time_control()
+                        app.root.current = 'settings_window'
+                        root.manager.transition.direction = 'right'
+        Label:
+            size_hint: 1, .1
+        BoxLayout:
+            padding:
+                dp(50), 0, dp(50), 0
+            orientation:
+                'vertical'
+            Label:
+                id: minute_slider
+                text: 'Minute(s): 0'
+                font_size: 40
+                bold: True
+                color: 179/255,138/255,105/255, 1
+            Slider:
+                cursor_image: 'circle.png'
+                id: slider1
+                min: 0
+                max: 60
+                step: 1
+                on_value: root.minutes(*args)
+            Label:
+                id: second_slider
+                text: 'Second(s): 0'
+                font_size: 40
+                bold: True
+                color: 179/255,138/255,105/255, 1
+            Slider:
+                cursor_image: 'circle.png'
+                id: slider2
+                min: 0
+                max: 60
+                step: 1
+                on_value: root.seconds(*args)
+            Label:
+                id: increment_slider
+                text: 'Increment: 0'
+                font_size: 40
+                bold: True
+                color: 179/255,138/255,105/255, 1
+            Slider:
+                cursor_image: 'circle.png'
+                id: slider3
+                min: 0
+                max: 60
+                step: 1
+                on_value: root.increment(*args)
+        Label:
+            size_hint: 1, .1
+        BoxLayout:
+            padding: dp(25),0,dp(25),0
+            size_hint: 1, .1
+            canvas.before:
+                Color:
+                    rgba: 179/255,138/255,105/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
